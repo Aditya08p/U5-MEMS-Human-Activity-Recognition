@@ -55,7 +55,7 @@
 		<link>
 			<name>Application/User/ism330dhcx_read_data_polling.c</name>
 			<type>1</type>
-			<location>C:/REPOS/STM32U5/U5_MEMS_HAR/Src/ism330dhcx_read_data_polling.c</location>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/ism330dhcx_read_data_polling.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/main.c</name>
