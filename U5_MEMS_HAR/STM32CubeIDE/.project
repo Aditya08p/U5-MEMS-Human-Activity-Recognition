@@ -38,6 +38,26 @@
 			<locationURI>PARENT-1-PROJECT_LOC/U5_MEMS_HAR.ioc</locationURI>
 		</link>
 		<link>
+			<name>Application/User/app_hts221.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/app_hts221.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/app_iis2mdc.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/app_iis2mdc.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/app_ism330dhcx.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/app_ism330dhcx.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/app_lps22hh.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/app_lps22hh.c</locationURI>
+		</link>
+		<link>
 			<name>Application/User/b_u585i_iot02a_bus.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/b_u585i_iot02a_bus.c</locationURI>
@@ -51,11 +71,6 @@
 			<name>Application/User/icache.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/icache.c</locationURI>
-		</link>
-		<link>
-			<name>Application/User/ism330dhcx_read_data_polling.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/ism330dhcx_read_data_polling.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/main.c</name>

@@ -25,6 +25,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "b_u585i_iot02a_bus.h"
+#include "app_ism330dhcx.h"
+#include "app_iis2mdc.h"
+#include "app_hts221.h"
+#include "app_lps22hh.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,8 +105,17 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  printf("starting acc gyro\r\n");
-  printf("I2C2 init: %d\r\n",BSP_I2C2_Init());
+//  printf("starting acc gyro\r\n");
+//  printf("I2C2 init: %ld\r\n",
+		  BSP_I2C2_Init();
+//		  );
+//  printf("0xD5 : %ld\r\n",
+		  BSP_I2C2_IsReady(ISM330DHCX_I2C_ADD_H, 10);
+//		  );
+  ism330dhcx_Init();
+  iis2mdc_Init();
+  hts221_Init();
+  lps22hh_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,6 +125,20 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+//	printf("\033[2J\033[H");
+//	printf("ISM330DHCX:\r\n");
+//  ism330dhcx_read_data_polling();
+//  printf("\r\n");
+//	printf("IIS2MDC:\r\n");
+//	iis2mdc_read_data_polling();
+//  printf("\r\n");
+//	printf("HTS221:\r\n");
+//	hts221_read_data_polling();
+//  printf("\r\n");
+//	printf("LPS22HH:\r\n");
+//	lps22hh_read_data_polling();
+//  printf("\r\n");
+//    HAL_Delay(20);
   }
   /* USER CODE END 3 */
 }

@@ -65,8 +65,9 @@ void Error_Handler(void);
 #define T_SWO_GPIO_Port GPIOB
 #define PC15_OSC32_OUT_Pin GPIO_PIN_15
 #define PC15_OSC32_OUT_GPIO_Port GPIOC
-#define USER_Button_Pin GPIO_PIN_13
-#define USER_Button_GPIO_Port GPIOC
+#define User_Button_Pin GPIO_PIN_13
+#define User_Button_GPIO_Port GPIOC
+#define User_Button_EXTI_IRQn EXTI13_IRQn
 #define LED_RED_Pin GPIO_PIN_6
 #define LED_RED_GPIO_Port GPIOH
 #define LED_GREEN_Pin GPIO_PIN_7
@@ -83,10 +84,13 @@ void Error_Handler(void);
 #define Mems_VLX_GPIO_GPIO_Port GPIOG
 #define Mems_INT_IIS2MDC_Pin GPIO_PIN_10
 #define Mems_INT_IIS2MDC_GPIO_Port GPIOD
+#define Mems_INT_IIS2MDC_EXTI_IRQn EXTI10_IRQn
 #define Mems_INT_LPS22HH_Pin GPIO_PIN_2
 #define Mems_INT_LPS22HH_GPIO_Port GPIOG
+#define Mems_INT_LPS22HH_EXTI_IRQn EXTI2_IRQn
 #define Mems_ISM330DLC_INT1_Pin GPIO_PIN_11
 #define Mems_ISM330DLC_INT1_GPIO_Port GPIOE
+#define Mems_ISM330DLC_INT1_EXTI_IRQn EXTI11_IRQn
 
 /* USER CODE BEGIN Private defines */
 
