@@ -1,0 +1,10 @@
+# Tested on Python 3.11.9
+# To install the required packages, run the following command in your terminal:
+# pip install -r .\requirements.txt
+pyserial>=3.5
+numpy
+tensorflow
+pandas
+matplotlib
+seaborn
+scikit-learn
