@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser()
 parser.add_argument('filename')
-parser.add_argument('--fs', type=float, default=52)
 args = parser.parse_args()
 
 with open(args.filename) as f:
@@ -19,14 +18,14 @@ if data.ndim == 1:
 
 labels = first_line.strip().split(',') if has_header else [f'col_{i}' for i in range(data.shape[1])]
 
+# Extract timestamp
+time = data[:, 0] / 1000.0   # ms → seconds
+signals = data[:, 1:]
+
 plt.figure(figsize=(10, 3))
 
-Fs = args.fs
-
-time = np.arange(data.shape[0]) / Fs
-
-for i in range(data.shape[1]):
-    plt.plot(time, data[:, i], label=labels[i])
+for i in range(signals.shape[1]):
+    plt.plot(time, signals[:, i], label=labels[i+1])
 
 plt.xlabel("Time (s)")
 plt.legend()

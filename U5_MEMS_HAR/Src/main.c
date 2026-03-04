@@ -104,14 +104,8 @@ int main(void)
   MX_ICACHE_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
-//  printf("starting acc gyro\r\n");
-//  printf("I2C2 init: %ld\r\n",
-		  BSP_I2C2_Init();
-//		  );
-//  printf("0xD5 : %ld\r\n",
-		  BSP_I2C2_IsReady(ISM330DHCX_I2C_ADD_H, 10);
-//		  );
+  BSP_I2C2_Init();
+  BSP_I2C2_IsReady(ISM330DHCX_I2C_ADD_H, 10);
   ism330dhcx_Init();
   iis2mdc_Init();
   hts221_Init();
@@ -122,9 +116,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
+/*  ISM330DHCX is in DRDY Interrupt mode, IRQ will handle sensor data. */
 //	printf("\033[2J\033[H");
 //	printf("ISM330DHCX:\r\n");
 //  ism330dhcx_read_data_polling();
@@ -139,6 +131,9 @@ int main(void)
 //	lps22hh_read_data_polling();
 //  printf("\r\n");
 //    HAL_Delay(20);
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }

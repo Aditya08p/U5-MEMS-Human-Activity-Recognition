@@ -44,7 +44,7 @@ static float_t temperature_degC;
 static uint8_t ism330dhcx_whoamI, rst;
 static uint8_t tx_buffer[1000];
 static stmdev_ctx_t ism330dhcx_dev_ctx;
-
+static volatile int32_t tick;
 /* Private function prototypes -----------------------------------------------*/
 static int32_t platform_write(void *handle, uint8_t reg, uint8_t *bufp,
 		uint16_t len);
@@ -95,11 +95,11 @@ void ism330dhcx_Init(void) {
 	/* Enable Block Data Update */
 	ism330dhcx_block_data_update_set(&ism330dhcx_dev_ctx, PROPERTY_ENABLE);
 	/* Set Output Data Rate */
-	ism330dhcx_xl_data_rate_set(&ism330dhcx_dev_ctx, ISM330DHCX_XL_ODR_52Hz);
-	ism330dhcx_gy_data_rate_set(&ism330dhcx_dev_ctx, ISM330DHCX_GY_ODR_52Hz);
+	ism330dhcx_xl_data_rate_set(&ism330dhcx_dev_ctx, ISM330DHCX_XL_ODR_26Hz);
+	ism330dhcx_gy_data_rate_set(&ism330dhcx_dev_ctx, ISM330DHCX_XL_ODR_26Hz);
 	/* Set full scale */
 	ism330dhcx_xl_full_scale_set(&ism330dhcx_dev_ctx, ISM330DHCX_4g);
-	ism330dhcx_gy_full_scale_set(&ism330dhcx_dev_ctx, ISM330DHCX_500dps);
+	ism330dhcx_gy_full_scale_set(&ism330dhcx_dev_ctx, ISM330DHCX_1000dps);
 	/* Choose data‑ready notification mode (pulsed or latched) */
 	ism330dhcx_data_ready_mode_set(&ism330dhcx_dev_ctx, ISM330DHCX_DRDY_PULSED);
 
@@ -158,11 +158,11 @@ void ism330dhcx_read_data_polling(void) {
 		/* Read angular rate field data */
 		memset(data_raw_angular_rate, 0x00, 3 * sizeof(int16_t));
 		ism330dhcx_angular_rate_raw_get(&ism330dhcx_dev_ctx, data_raw_angular_rate);
-		angular_rate_mdps[0] = ism330dhcx_from_fs500dps_to_mdps(
+		angular_rate_mdps[0] = ism330dhcx_from_fs1000dps_to_mdps(
 				data_raw_angular_rate[0]);
-		angular_rate_mdps[1] = ism330dhcx_from_fs500dps_to_mdps(
+		angular_rate_mdps[1] = ism330dhcx_from_fs1000dps_to_mdps(
 				data_raw_angular_rate[1]);
-		angular_rate_mdps[2] = ism330dhcx_from_fs500dps_to_mdps(
+		angular_rate_mdps[2] = ism330dhcx_from_fs1000dps_to_mdps(
 				data_raw_angular_rate[2]);
 		snprintf((char*) tx_buffer, sizeof(tx_buffer),
 				"%4.2f %4.2f %4.2f\r\n",
@@ -186,7 +186,9 @@ void ism330dhcx_read_data_polling(void) {
 
 void ism330dhcx_read_data_drdy(void){
 	uint8_t drdy;
-
+	tick=HAL_GetTick();
+	snprintf((char*) tx_buffer, sizeof(tx_buffer), "%lu ", tick);
+	tx_com(tx_buffer, (uint16_t) strlen((char const*) tx_buffer));
 	/* accel */
 	ism330dhcx_xl_flag_data_ready_get(&ism330dhcx_dev_ctx, &drdy);
 	if (drdy)

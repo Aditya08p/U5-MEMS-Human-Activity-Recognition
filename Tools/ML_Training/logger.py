@@ -5,8 +5,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-EXPECTED_FIELDS = 6
-CSV_HEADER = ["acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"]
+EXPECTED_FIELDS = 7
+CSV_HEADER = ["timestamp_ms","acc_x", "acc_y", "acc_z", "gyro_x", "gyro_y", "gyro_z"]
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -75,7 +75,7 @@ def get_filename():
     label = input("Enter label for this dataset: ").strip().replace(" ", "_")
     if not label:
         label = "unlabeled"
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%m%d%Y_%H%M%S")
 
     # Create base data directory if needed
     DATA_DIR.mkdir(exist_ok=True)
@@ -96,7 +96,9 @@ def parse_line(line):
         return None
 
     try:
-        return [float(x) for x in parts]
+        timestamp = int(parts[0])
+        values = [float(x) for x in parts[1:]]
+        return [timestamp] + values
     except ValueError:
         return None
 

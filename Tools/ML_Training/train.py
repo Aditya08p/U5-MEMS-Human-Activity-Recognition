@@ -18,12 +18,12 @@ MODEL_DIR = os.path.join(BASE_DIR, "Models")
 os.makedirs(MODEL_DIR, exist_ok=True)
 
 
-FRAME_LEN = 52             # 1 second at 52Hz sampling rate
+FRAME_LEN = 26             # 1 second at 52Hz sampling rate
 HOP_LEN = FRAME_LEN // 2       # 50% overlap
 EPOCHS = 30
 
 ACC_NORM = 4000.0           # mg for ±4g
-GYRO_NORM = 500000.0       # mdps for ±500 dps (normalized to ±1.0)
+GYRO_NORM = 1000000.0       # mdps for ±1000 dps (normalized to ±1.0)
 
 # =========================
 # LOAD LABELS
