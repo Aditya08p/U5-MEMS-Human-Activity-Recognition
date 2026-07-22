@@ -51,13 +51,15 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define EDGE_AI
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 volatile uint32_t dataRdyIntReceived = 0;
+volatile uint32_t inference_enable = 0;
+
 ai_handle network;
 float aiInData[AI_NETWORK_IN_1_SIZE];
 float aiOutData[AI_NETWORK_OUT_1_SIZE];
@@ -181,58 +183,52 @@ int main(void)
   uint32_t write_index = 0;
   while (1)
   {
-/*  ISM330DHCX is in DRDY Interrupt mode, IRQ will handle sensor data. */
-//	printf("\033[2J\033[H");
-//	printf("ISM330DHCX:\r\n");
-//  ism330dhcx_read_data_polling();
-//  printf("\r\n");
-//	printf("IIS2MDC:\r\n");
-//	iis2mdc_read_data_polling();
-//  printf("\r\n");
-//	printf("HTS221:\r\n");
-//	hts221_read_data_polling();
-//  printf("\r\n");
-//	printf("LPS22HH:\r\n");
-//	lps22hh_read_data_polling();
-//  printf("\r\n");
-//    HAL_Delay(20);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	if(dataRdyIntReceived){
-		dataRdyIntReceived=0U;
-		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-		ism330dhcx_read_data_drdy();
-#ifdef EDGE_AI
-		/* Normalize data to [-1; 1] and accumulate into input buffer */
-		/* Note: window overlapping can be managed here */
-		aiInData[write_index + 0] = (float) acceleration_mg[0] / 4000.0f;
-		aiInData[write_index + 1] = (float) acceleration_mg[1] / 4000.0f;
-		aiInData[write_index + 2] = (float) acceleration_mg[2] / 4000.0f;
-		aiInData[write_index + 3] = (float) angular_rate_mdps[0] / 1000000.0f;
-		aiInData[write_index + 4] = (float) angular_rate_mdps[1] / 1000000.0f;
-		aiInData[write_index + 5] = (float) angular_rate_mdps[2] / 1000000.0f;
-		write_index += 6;
+    /* ISM330DHCX is in DRDY Interrupt mode, IRQ will handle sensor data. */
+	  if (dataRdyIntReceived) {
+		  dataRdyIntReceived = 0U;
+		  HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+		  ism330dhcx_read_data_drdy();
 
-		if (write_index == AI_NETWORK_IN_1_SIZE) {
-			write_index = 0;
+		  if (inference_enable) {
+			  /* Normalize data to [-1; 1] and accumulate into input buffer */
+			  /* Note: window overlapping can be managed here */
+			  aiInData[write_index + 0] = (float) acceleration_mg[0]
+																  / 4000.0f;
+			  aiInData[write_index + 1] = (float) acceleration_mg[1]
+																  / 4000.0f;
+			  aiInData[write_index + 2] = (float) acceleration_mg[2]
+																  / 4000.0f;
+			  aiInData[write_index + 3] = (float) angular_rate_mdps[0]
+																	/ 1000000.0f;
+			  aiInData[write_index + 4] = (float) angular_rate_mdps[1]
+																	/ 1000000.0f;
+			  aiInData[write_index + 5] = (float) angular_rate_mdps[2]
+																	/ 1000000.0f;
+			  write_index += 6;
 
-			printf("Running inference\r\n");
-			AI_Run(aiInData, aiOutData);
+			  if (write_index == AI_NETWORK_IN_1_SIZE) {
+				  write_index = 0;
 
-			/* Output results */
-			for (uint32_t i = 0; i < AI_NETWORK_OUT_1_SIZE; i++) {
-				printf("%8.6f ", aiOutData[i]);
-			}
-			uint32_t class = argmax(aiOutData, AI_NETWORK_OUT_1_SIZE);
-			printf(": %d - %s\r\n", (int) class, activities[class]);
-		}
-#else
-		printf("%lu %.2f %.2f %.2f %.2f %.2f %.2f\r\n",HAL_GetTick(),
-				acceleration_mg[0],acceleration_mg[1],acceleration_mg[2],
-				angular_rate_mdps[0],angular_rate_mdps[1],angular_rate_mdps[2]);
-#endif
-	}
+				  printf("Running inference\r\n");
+				  AI_Run(aiInData, aiOutData);
+
+				  /* Output results */
+				  for (uint32_t i = 0; i < AI_NETWORK_OUT_1_SIZE; i++) {
+					  printf("%8.6f ", aiOutData[i]);
+				  }
+				  uint32_t class = argmax(aiOutData, AI_NETWORK_OUT_1_SIZE);
+				  printf(": %d - %s\r\n", (int) class, activities[class]);
+			  }
+		  } else {
+			  printf("%lu %.2f %.2f %.2f %.2f %.2f %.2f\r\n", HAL_GetTick(),
+					  acceleration_mg[0], acceleration_mg[1],
+					  acceleration_mg[2], angular_rate_mdps[0],
+					  angular_rate_mdps[1], angular_rate_mdps[2]);
+		  }
+	  }
   }
   /* USER CODE END 3 */
 }

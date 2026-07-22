@@ -59,6 +59,7 @@
 
 /* USER CODE BEGIN EV */
 extern volatile uint32_t dataRdyIntReceived;
+extern volatile uint32_t inference_enable;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -251,7 +252,7 @@ void EXTI13_IRQHandler(void)
   /* USER CODE END EXTI13_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(User_Button_Pin);
   /* USER CODE BEGIN EXTI13_IRQn 1 */
-
+  inference_enable = !inference_enable;
   /* USER CODE END EXTI13_IRQn 1 */
 }
 
