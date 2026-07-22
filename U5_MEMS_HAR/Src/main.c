@@ -30,6 +30,13 @@
 #include "app_iis2mdc.h"
 #include "app_hts221.h"
 #include "app_lps22hh.h"
+
+/* AI BEGIN Includes */
+#include "ai_platform.h"
+#include "network.h"
+#include "network_data.h"
+/* AI END Includes */
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,20 +51,31 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define EDGE_AI
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+volatile uint32_t dataRdyIntReceived = 0;
+ai_handle network;
+float aiInData[AI_NETWORK_IN_1_SIZE];
+float aiOutData[AI_NETWORK_OUT_1_SIZE];
+ai_u8 activations[AI_NETWORK_DATA_ACTIVATIONS_SIZE];
+const char* activities[AI_NETWORK_OUT_1_SIZE] = {
+  "stationary", "left_right", "up_down"
+};
+ai_buffer * ai_input;
+ai_buffer * ai_output;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void SystemPower_Config(void);
 /* USER CODE BEGIN PFP */
-
+static void AI_Init(void);
+static void AI_Run(float *pIn, float *pOut);
+static uint32_t argmax(const float * values, uint32_t len);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -66,6 +84,51 @@ int _write(int file, char *ptr, int len)
 {
 	HAL_UART_Transmit(&huart1, (uint8_t*)ptr, len, HAL_MAX_DELAY);
 	return len;
+}
+
+static void AI_Init(void) {
+	ai_error err;
+
+	/* Create a local array with the addresses of the activations buffers */
+	const ai_handle act_addr[] = { activations };
+	/* Create an instance of the model */
+	err = ai_network_create_and_init(&network, act_addr, NULL);
+	if (err.type != AI_ERROR_NONE) {
+		printf("ai_network_create error - type=%d code=%d\r\n", err.type,
+				err.code);
+		Error_Handler();
+	}
+	ai_input = ai_network_inputs_get(network, NULL);
+	ai_output = ai_network_outputs_get(network, NULL);
+}
+
+static void AI_Run(float *pIn, float *pOut) {
+	ai_i32 batch;
+	ai_error err;
+
+	/* Update IO handlers with the data payload */
+	ai_input[0].data = AI_HANDLE_PTR(pIn);
+	ai_output[0].data = AI_HANDLE_PTR(pOut);
+
+	batch = ai_network_run(network, ai_input, ai_output);
+	if (batch != 1) {
+		err = ai_network_get_error(network);
+		printf("AI ai_network_run error - type=%d code=%d\r\n", err.type,
+				err.code);
+		Error_Handler();
+	}
+}
+
+static uint32_t argmax(const float *values, uint32_t len) {
+	float max_value = values[0];
+	uint32_t max_index = 0;
+	for (uint32_t i = 1; i < len; i++) {
+		if (values[i] > max_value) {
+			max_value = values[i];
+			max_index = i;
+		}
+	}
+	return max_index;
 }
 /* USER CODE END 0 */
 
@@ -110,10 +173,12 @@ int main(void)
   iis2mdc_Init();
   hts221_Init();
   lps22hh_Init();
+  AI_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t write_index = 0;
   while (1)
   {
 /*  ISM330DHCX is in DRDY Interrupt mode, IRQ will handle sensor data. */
@@ -134,6 +199,40 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	if(dataRdyIntReceived){
+		dataRdyIntReceived=0U;
+		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+		ism330dhcx_read_data_drdy();
+#ifdef EDGE_AI
+		/* Normalize data to [-1; 1] and accumulate into input buffer */
+		/* Note: window overlapping can be managed here */
+		aiInData[write_index + 0] = (float) acceleration_mg[0] / 4000.0f;
+		aiInData[write_index + 1] = (float) acceleration_mg[1] / 4000.0f;
+		aiInData[write_index + 2] = (float) acceleration_mg[2] / 4000.0f;
+		aiInData[write_index + 3] = (float) angular_rate_mdps[0] / 1000000.0f;
+		aiInData[write_index + 4] = (float) angular_rate_mdps[1] / 1000000.0f;
+		aiInData[write_index + 5] = (float) angular_rate_mdps[2] / 1000000.0f;
+		write_index += 6;
+
+		if (write_index == AI_NETWORK_IN_1_SIZE) {
+			write_index = 0;
+
+			printf("Running inference\r\n");
+			AI_Run(aiInData, aiOutData);
+
+			/* Output results */
+			for (uint32_t i = 0; i < AI_NETWORK_OUT_1_SIZE; i++) {
+				printf("%8.6f ", aiOutData[i]);
+			}
+			uint32_t class = argmax(aiOutData, AI_NETWORK_OUT_1_SIZE);
+			printf(": %d - %s\r\n", (int) class, activities[class]);
+		}
+#else
+		printf("%lu %.2f %.2f %.2f %.2f %.2f %.2f\r\n",HAL_GetTick(),
+				acceleration_mg[0],acceleration_mg[1],acceleration_mg[2],
+				angular_rate_mdps[0],angular_rate_mdps[1],angular_rate_mdps[2]);
+#endif
+	}
   }
   /* USER CODE END 3 */
 }

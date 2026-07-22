@@ -58,7 +58,7 @@
 /* External variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN EV */
-
+extern volatile uint32_t dataRdyIntReceived;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -237,8 +237,7 @@ void EXTI11_IRQHandler(void)
   /* USER CODE END EXTI11_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(Mems_ISM330DLC_INT1_Pin);
   /* USER CODE BEGIN EXTI11_IRQn 1 */
-  HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-  ism330dhcx_read_data_drdy();
+  dataRdyIntReceived = 1U;
   /* USER CODE END EXTI11_IRQn 1 */
 }
 

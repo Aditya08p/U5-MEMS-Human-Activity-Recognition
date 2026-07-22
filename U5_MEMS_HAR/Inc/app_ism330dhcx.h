@@ -34,17 +34,14 @@ extern "C" {
 void ism330dhcx_Init(void);
 
 /**
-  * @brief  Example function reading data from ISM330DHCX in polling mode.
-  * @retval none
-  */
-void ism330dhcx_read_data_polling(void);
-
-/**
-  * @brief  Example function reading data from ISM330DHCX in data ready interrupt mode.
+  * @brief  Example function reading data from ISM330DHCX in drdy mode.
   * @retval none
   */
 void ism330dhcx_read_data_drdy(void);
 
+extern float_t acceleration_mg[3];
+extern float_t angular_rate_mdps[3];
+extern float_t temperature_degC;
 
 #ifdef __cplusplus
 }

@@ -38,6 +38,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/U5_MEMS_HAR.ioc</locationURI>
 		</link>
 		<link>
+			<name>Doc/network_generate_report.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/network_generate_report.txt</locationURI>
+		</link>
+		<link>
 			<name>Application/User/app_hts221.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/app_hts221.c</locationURI>
@@ -76,6 +81,21 @@
 			<name>Application/User/main.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/main.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/network.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/network.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/network_data.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/network_data.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/network_data_params.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/network_data_params.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/stm32u5xx_hal_msp.c</name>
