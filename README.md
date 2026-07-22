@@ -17,7 +17,7 @@ This project was built and tested with the following software stack:
 - **STM32Cube MCU Package for STM32U5 series**: [v1.8.0](https://www.st.com/en/embedded-software/stm32cubeu5.html)
 
 ## Dependencies
-The custom datalogging and model training pipeline in the [Tools/](Tools/) submodule requires Python 3.11 and the following packages (see [Tools/requirements.txt](Tools/requirements.txt)):
+The custom datalogging and model training pipeline in the [Tools/](https://github.com/Aditya08p/HAR-Utilities) submodule requires Python 3.11 and the following packages (see [Tools/requirements.txt](https://github.com/Aditya08p/HAR-Utilities/blob/main/requirements.txt)):
 - `numpy==1.23.5`
 - `tensorflow==2.12.0`
 - `matplotlib==3.7.2`
@@ -48,8 +48,8 @@ pip install -r Tools/requirements.txt
 
 ## Project Structure
 - [U5_MEMS_HAR/](U5_MEMS_HAR/): STM32CubeMX generated project containing the firmware, sensor drivers, and X-CUBE-AI middleware.
-- [Tools/](Tools/): Submodule containing Python scripts for data collection ([Scripts/har_logger.py](Tools/Scripts/har_logger.py)), dataset management, and model training ([Scripts/har_train.py](Tools/Scripts/har_train.py)).
-- [Binary/](Binary/): Pre-compiled binaries for both datalogging and inference modes.
+- [Tools/](https://github.com/Aditya08p/HAR-Utilities): Submodule containing Python scripts for data collection ([Scripts/har_logger.py](https://github.com/Aditya08p/HAR-Utilities/blob/main/Scripts/har_logger.py)), dataset management, and model training ([Scripts/har_train.py](https://github.com/Aditya08p/HAR-Utilities/blob/main/Scripts/har_train.py)).
+- [Binary/](U5_MEMS_HAR/Binary/): Pre-compiled binaries for both datalogging and inference modes.
 
 ## Features
 - **Custom Datalogging & Training Pipeline**: Read sensor data via the ST-LINK serial port, visualize it, and train a custom TensorFlow Sequential model.
@@ -88,4 +88,5 @@ Press the **User Button** on the board to toggle the `inference_enable` flag.
 - Monitor the output using any standard serial monitor at 115200 baud, Tera Term output is shown below as an example.
 
 **Inference Output:**
-![Inference Output Screenshot](image\inference.png)
+
+![Inference Output Screenshot](image/inference.png)
