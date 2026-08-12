@@ -2,6 +2,14 @@
 
 Real-time Human Activity Recognition (HAR) implementation using onboard MEMS motion sensors.
 
+## Cloning the Repository
+
+To clone this repository and its submodules, run the following command:
+
+```bash
+git clone --recurse-submodules https://github.com/Aditya08p/U5-MEMS-Human-Activity-Recognition.git
+```
+
 ## Hardware Stack
 - **Development Board**: STM32 B-U585I-IOT02A Discovery kit
 - **Sensors**: 
@@ -30,6 +38,10 @@ It is recommended to use a python virtual environment to ensure compatibility wi
 Initialize a virtual environment:
 ```bash
 python -m venv venv
+```
+or if you have multiple versions installed use a command like:
+```bash
+py -3.11 -m venv venv
 ```
 
 Activate the virtual environment:
