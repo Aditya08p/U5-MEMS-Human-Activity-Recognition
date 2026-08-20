@@ -22,10 +22,7 @@
 #define  __RTE_COMPONENTS_H__
 
 /* Defines ------------------------------------------------------------------*/
-/* STMicroelectronics.X-CUBE-MEMS1.12.0.0 */
+/* STMicroelectronics.X-CUBE-MEMS1.13.0.0 */
 #define ISM330DHCX_ACCGYR_I2C
-#define IIS2MDC_MAG_I2C
-#define LPS22HH_PRESSTEMP_I2C
-#define HTS221_HUMTEMP_I2C
 
 #endif /* __RTE_COMPONENTS_H__ */

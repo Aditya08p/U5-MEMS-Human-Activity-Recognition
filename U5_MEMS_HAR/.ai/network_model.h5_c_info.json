@@ -554,44 +554,44 @@
   ],
   "environment": {
     "generated_model": {
-      "generated_time": "2026-07-22T21:38:02+0530",
+      "generated_time": "2026-08-20T22:30:43+0530",
       "model_files": [
         {
           "name": "network_data_params.h",
-          "signature": "0xc2b2d1c1c9d46a19d397d97c0d70558b"
+          "signature": "0x00201933c633755dd1ec66b0ce43573c"
         },
         {
           "name": "network_data_params.c",
-          "signature": "0x907546c45fc199aadd15d1b1d377d9c2"
+          "signature": "0xa5a361d56a704dacad49f8311418c31c"
         },
         {
           "name": "network_data.h",
-          "signature": "0xcd631cd85fdabe6f30d2cac709e760d9"
+          "signature": "0x44af102dd07b6a1b1e84b812f60106cc"
         },
         {
           "name": "network_data.c",
-          "signature": "0xda711b291f764fb9272e8779f69a2eaf"
+          "signature": "0x6a5568c90ed9f20c7986f08007819e8b"
         },
         {
           "name": "network_config.h",
-          "signature": "0x685219a27d095af758be432c9ad3bb24"
+          "signature": "0x8ff509695137fe3ce186d5cece3d45ad"
         },
         {
           "name": "network.h",
-          "signature": "0xd60d6519186436aa864c801f54451790"
+          "signature": "0xce839e6a7e002847b310b9218c8c6486"
         },
         {
           "name": "network.c",
-          "signature": "0x0868deac2a2d43a5a54bb79bd20c7a40"
+          "signature": "0x472ec983afabd469b302852d95531a99"
         }
       ],
       "name": "network"
     },
-    "network_signature": "0x3b4d8844cd6f4c65",
+    "network_signature": "0xb280794209e63aa1",
     "test_name": "",
     "tools": [
       {
-        "arguments": "generate --target stm32u5 --name network -m C:/ST_Projects/U5-MEMS-Human-Activity-Recognition/Tools/Scripts/model.h5 --compression none --verbosity 1 --workspace C:/Users/adity/AppData/Local/Temp/mxAI_workspace1105469746240010090175273570574881 --output C:/Users/adity/.stm32cubemx/network_output",
+        "arguments": "generate --target stm32u5 --name network -m C:/ST_Projects/U5-MEMS-Human-Activity-Recognition/U5_MEMS_HAR/../Tools/Scripts/model.h5 --compression none --verbosity 1 --workspace C:/Users/adity/AppData/Local/Temp/mxAI_workspace102484105018005132641935912946186 --output C:/Users/adity/.stm32cubemx/network_output",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],

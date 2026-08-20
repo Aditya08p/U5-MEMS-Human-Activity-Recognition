@@ -27,9 +27,6 @@
 #include "stdio.h"
 #include "b_u585i_iot02a_bus.h"
 #include "app_ism330dhcx.h"
-#include "app_iis2mdc.h"
-#include "app_hts221.h"
-#include "app_lps22hh.h"
 
 /* AI BEGIN Includes */
 #include "ai_platform.h"
@@ -172,61 +169,59 @@ int main(void)
   BSP_I2C2_Init();
   BSP_I2C2_IsReady(ISM330DHCX_I2C_ADD_H, 10);
   ism330dhcx_Init();
-  iis2mdc_Init();
-  hts221_Init();
-  lps22hh_Init();
   AI_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint32_t write_index = 0;
-  while (1)
-  {
+  while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    /* ISM330DHCX is in DRDY Interrupt mode, IRQ will handle sensor data. */
-	  if (dataRdyIntReceived) {
-		  dataRdyIntReceived = 0U;
-		  HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-		  ism330dhcx_read_data_drdy();
+	/* ISM330DHCX is in DRDY Interrupt mode, IRQ will handle sensor data. */
+	if (dataRdyIntReceived) {
+	  dataRdyIntReceived = 0U;
+	  ism330dhcx_read_data_drdy();
 
-		  if (inference_enable) {
-			  /* Normalize data to [-1; 1] and accumulate into input buffer */
-			  /* Note: window overlapping can be managed here */
-			  aiInData[write_index + 0] = (float) acceleration_mg[0]
-																  / 4000.0f;
-			  aiInData[write_index + 1] = (float) acceleration_mg[1]
-																  / 4000.0f;
-			  aiInData[write_index + 2] = (float) acceleration_mg[2]
-																  / 4000.0f;
-			  aiInData[write_index + 3] = (float) angular_rate_mdps[0]
-																	/ 1000000.0f;
-			  aiInData[write_index + 4] = (float) angular_rate_mdps[1]
-																	/ 1000000.0f;
-			  aiInData[write_index + 5] = (float) angular_rate_mdps[2]
-																	/ 1000000.0f;
-			  write_index += 6;
+	  if (inference_enable) {
+		  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin,GPIO_PIN_RESET);
+		  /* Normalize data to [-1; 1] and accumulate into input buffer */
+		  /* Note: window overlapping can be managed here */
+		  aiInData[write_index + 0] = (float) acceleration_mg[0]
+															  / 4000.0f;
+		  aiInData[write_index + 1] = (float) acceleration_mg[1]
+															  / 4000.0f;
+		  aiInData[write_index + 2] = (float) acceleration_mg[2]
+															  / 4000.0f;
+		  aiInData[write_index + 3] = (float) angular_rate_mdps[0]
+																/ 1000000.0f;
+		  aiInData[write_index + 4] = (float) angular_rate_mdps[1]
+																/ 1000000.0f;
+		  aiInData[write_index + 5] = (float) angular_rate_mdps[2]
+																/ 1000000.0f;
+		  write_index += 6;
 
-			  if (write_index == AI_NETWORK_IN_1_SIZE) {
-				  write_index = 0;
+		  if (write_index == AI_NETWORK_IN_1_SIZE) {
+			  write_index = 0;
 
-				  printf("Running inference\r\n");
-				  AI_Run(aiInData, aiOutData);
+			  printf("Running inference\r\n");
+			  AI_Run(aiInData, aiOutData);
 
-				  /* Output results */
-				  for (uint32_t i = 0; i < AI_NETWORK_OUT_1_SIZE; i++) {
-					  printf("%8.6f ", aiOutData[i]);
-				  }
-				  uint32_t class = argmax(aiOutData, AI_NETWORK_OUT_1_SIZE);
-				  printf(": %d - %s\r\n", (int) class, activities[class]);
+			  /* Output results */
+			  for (uint32_t i = 0; i < AI_NETWORK_OUT_1_SIZE; i++) {
+				  printf("%8.6f ", aiOutData[i]);
 			  }
-		  } else {
+			  uint32_t class = argmax(aiOutData, AI_NETWORK_OUT_1_SIZE);
+			  printf(": %d - %s\r\n", (int) class, activities[class]);
+			  HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+		  }
+	  } else {
 			  printf("%lu %.2f %.2f %.2f %.2f %.2f %.2f\r\n", HAL_GetTick(),
 					  acceleration_mg[0], acceleration_mg[1],
 					  acceleration_mg[2], angular_rate_mdps[0],
 					  angular_rate_mdps[1], angular_rate_mdps[2]);
+			  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin,GPIO_PIN_SET);
 		  }
 	  }
   }
@@ -293,12 +288,6 @@ void SystemClock_Config(void)
   */
 static void SystemPower_Config(void)
 {
-  HAL_PWREx_EnableVddIO2();
-
-  /*
-   * Disable the internal Pull-Up in Dead Battery pins of UCPD peripheral
-   */
-  HAL_PWREx_DisableUCPDDeadBattery();
 
   /*
    * Switch to SMPS regulator instead of LDO
@@ -317,6 +306,7 @@ static void SystemPower_Config(void)
 
 /**
   * @brief  This function is executed in case of error occurrence.
+  * @param None
   * @retval None
   */
 void Error_Handler(void)

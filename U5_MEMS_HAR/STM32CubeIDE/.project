@@ -43,24 +43,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/network_generate_report.txt</locationURI>
 		</link>
 		<link>
-			<name>Application/User/app_hts221.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/app_hts221.c</locationURI>
-		</link>
-		<link>
-			<name>Application/User/app_iis2mdc.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/app_iis2mdc.c</locationURI>
-		</link>
-		<link>
 			<name>Application/User/app_ism330dhcx.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/app_ism330dhcx.c</locationURI>
-		</link>
-		<link>
-			<name>Application/User/app_lps22hh.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/app_lps22hh.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/b_u585i_iot02a_bus.c</name>
@@ -208,26 +193,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/STM32U5xx_HAL_Driver/Src/stm32u5xx_hal_uart_ex.c</locationURI>
 		</link>
 		<link>
-			<name>Drivers/BSP/Components/hts221.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/hts221/hts221.c</locationURI>
-		</link>
-		<link>
-			<name>Drivers/BSP/Components/hts221_reg.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/hts221/hts221_reg.c</locationURI>
-		</link>
-		<link>
-			<name>Drivers/BSP/Components/iis2mdc.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/iis2mdc/iis2mdc.c</locationURI>
-		</link>
-		<link>
-			<name>Drivers/BSP/Components/iis2mdc_reg.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/iis2mdc/iis2mdc_reg.c</locationURI>
-		</link>
-		<link>
 			<name>Drivers/BSP/Components/ism330dhcx.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/ism330dhcx/ism330dhcx.c</locationURI>
@@ -236,16 +201,6 @@
 			<name>Drivers/BSP/Components/ism330dhcx_reg.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/ism330dhcx/ism330dhcx_reg.c</locationURI>
-		</link>
-		<link>
-			<name>Drivers/BSP/Components/lps22hh.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/lps22hh/lps22hh.c</locationURI>
-		</link>
-		<link>
-			<name>Drivers/BSP/Components/lps22hh_reg.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Drivers/BSP/Components/lps22hh/lps22hh_reg.c</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

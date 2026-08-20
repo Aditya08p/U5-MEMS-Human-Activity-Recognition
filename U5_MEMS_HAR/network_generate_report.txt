@@ -1,30 +1,30 @@
 ST Edge AI Core v2.2.0-20266 2adc00962
-Created date          : 2026-07-22 21:38:04
-Parameters            : generate --target stm32u5 --name network -m C:/ST_Projects/U5-MEMS-Human-Activity-Recognition/Tools/Scripts/model.h5 --compression none --verbosity 1 --workspace C:/Users/adity/AppData/Local/Temp/mxAI_workspace1105469746240010090175273570574881 --output C:/Users/adity/.stm32cubemx/network_output
+Created date          : 2026-08-20 22:30:45
+Parameters            : generate --target stm32u5 --name network -m C:/ST_Projects/U5-MEMS-Human-Activity-Recognition/U5_MEMS_HAR/../Tools/Scripts/model.h5 --compression none --verbosity 1 --workspace C:/Users/adity/AppData/Local/Temp/mxAI_workspace102484105018005132641935912946186 --output C:/Users/adity/.stm32cubemx/network_output
 
 Exec/report summary (generate)
-------------------------------------------------------------------------------------------------------------
-model file         :   C:\ST_Projects\U5-MEMS-Human-Activity-Recognition\Tools\Scripts\model.h5             
-type               :   keras                                                                                
-c_name             :   network                                                                              
-compression        :   none                                                                                 
-options            :   allocate-inputs, allocate-outputs                                                    
-optimization       :   balanced                                                                             
-target/series      :   stm32u5                                                                              
-workspace dir      :   C:\Users\adity\AppData\Local\Temp\mxAI_workspace1105469746240010090175273570574881   
-output dir         :   C:\Users\adity\.stm32cubemx\network_output                                           
-model_fmt          :   float                                                                                
-model_name         :   model                                                                                
-model_hash         :   0xdc50288b34db44d1a67d33c41d79453b                                                   
-params #           :   24,947 items (97.45 KiB)                                                             
-------------------------------------------------------------------------------------------------------------
-input 1/1          :   'input_0', f32(1x26x6), 624 Bytes, activations                                       
-output 1/1         :   'dense_1', f32(1x3), 12 Bytes, activations                                           
-macc               :   71,680                                                                               
-weights (ro)       :   99,788 B (97.45 KiB) (1 segment)                                                     
-activations (rw)   :   3,520 B (3.44 KiB) (1 segment) *                                                     
-ram (total)        :   3,520 B (3.44 KiB) = 3,520 + 0 + 0                                                   
-------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+model file         :   C:\ST_Projects\U5-MEMS-Human-Activity-Recognition\Tools\Scripts\model.h5            
+type               :   keras                                                                               
+c_name             :   network                                                                             
+compression        :   none                                                                                
+options            :   allocate-inputs, allocate-outputs                                                   
+optimization       :   balanced                                                                            
+target/series      :   stm32u5                                                                             
+workspace dir      :   C:\Users\adity\AppData\Local\Temp\mxAI_workspace102484105018005132641935912946186   
+output dir         :   C:\Users\adity\.stm32cubemx\network_output                                          
+model_fmt          :   float                                                                               
+model_name         :   model                                                                               
+model_hash         :   0xdc50288b34db44d1a67d33c41d79453b                                                  
+params #           :   24,947 items (97.45 KiB)                                                            
+-----------------------------------------------------------------------------------------------------------
+input 1/1          :   'input_0', f32(1x26x6), 624 Bytes, activations                                      
+output 1/1         :   'dense_1', f32(1x3), 12 Bytes, activations                                          
+macc               :   71,680                                                                              
+weights (ro)       :   99,788 B (97.45 KiB) (1 segment)                                                    
+activations (rw)   :   3,520 B (3.44 KiB) (1 segment) *                                                    
+ram (total)        :   3,520 B (3.44 KiB) = 3,520 + 0 + 0                                                  
+-----------------------------------------------------------------------------------------------------------
 (*) 'input'/'output' buffers are allocated in the activations buffer
 
 Model name - model
