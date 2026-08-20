@@ -19,10 +19,10 @@ git clone --recurse-submodules https://github.com/Aditya08p/U5-MEMS-Human-Activi
 ## Software Requirements
 This project was built and tested with the following software stack:
 - **STM32CubeIDE**: [v2.2.0](https://www.st.com/en/development-tools/stm32cubeide)
-- **STM32CubeMX**: [v6.17.0](https://www.st.com/en/development-tools/stm32cubemx.html)
-- **X-CUBE-AI**: [v10.2.0](https://www.st.com/en/embedded-software/x-cube-ai.html)
-- **X-CUBE-MEMS1**: [v12.0.0](https://www.st.com/en/embedded-software/x-cube-mems1.html)
-- **STM32Cube MCU Package for STM32U5 series**: [v1.8.0](https://www.st.com/en/embedded-software/stm32cubeu5.html)
+- **STM32CubeMX**: [v6.18.1](https://www.st.com/en/development-tools/stm32cubemx.html)
+- **X-CUBE-AI**: [v10.2.1](https://www.st.com/en/embedded-software/x-cube-ai.html) Download the zip and extract in ```C:\Users\<username>\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-AI\10.2.1```
+- **X-CUBE-MEMS1**: [v13.0.0](https://www.st.com/en/embedded-software/x-cube-mems1.html)
+- **STM32Cube MCU Package for STM32U5 series**: [v1.9.0](https://www.st.com/en/embedded-software/stm32cubeu5.html)
 
 ## Dependencies
 The custom datalogging and model training pipeline in the [Tools/](https://github.com/Aditya08p/HAR-Utilities) submodule requires Python 3.11 and the following packages (see [Tools/requirements.txt](https://github.com/Aditya08p/HAR-Utilities/blob/main/requirements.txt)):
