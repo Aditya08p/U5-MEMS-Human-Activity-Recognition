@@ -20,7 +20,7 @@ git clone --recurse-submodules https://github.com/Aditya08p/U5-MEMS-Human-Activi
 This project was built and tested with the following software stack:
 - **STM32CubeIDE**: [v2.2.0](https://www.st.com/en/development-tools/stm32cubeide)
 - **STM32CubeMX**: [v6.18.1](https://www.st.com/en/development-tools/stm32cubemx.html)
-- **X-CUBE-AI**: [v10.2.1](https://www.st.com/en/embedded-software/x-cube-ai.html) Download the zip and extract in ```C:\Users\<username>\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-AI\10.2.1```
+- **STM32Cube AI Studio**: [v1.3.0](https://www.st.com/en/development-tools/stedgeai-cubeai.html)
 - **X-CUBE-MEMS1**: [v13.0.0](https://www.st.com/en/embedded-software/x-cube-mems1.html)
 - **STM32Cube MCU Package for STM32U5 series**: [v1.9.0](https://www.st.com/en/embedded-software/stm32cubeu5.html)
 
@@ -59,13 +59,13 @@ pip install -r Tools/requirements.txt
 ```
 
 ## Project Structure
-- [U5_MEMS_HAR/](U5_MEMS_HAR/): STM32CubeMX generated project containing the firmware, sensor drivers, and X-CUBE-AI middleware.
+- [U5_MEMS_HAR/](U5_MEMS_HAR/): STM32CubeMX generated project containing the firmware, sensor drivers, and AI model inference code.
 - [Tools/](https://github.com/Aditya08p/HAR-Utilities): Submodule containing Python scripts for data collection ([Scripts/har_logger.py](https://github.com/Aditya08p/HAR-Utilities/blob/main/Scripts/har_logger.py)), dataset management, and model training ([Scripts/har_train.py](https://github.com/Aditya08p/HAR-Utilities/blob/main/Scripts/har_train.py)).
 - [Binary/](U5_MEMS_HAR/Binary/): Pre-compiled binaries for both datalogging and inference modes.
 
 ## Features
 - **Custom Datalogging & Training Pipeline**: Read sensor data via the ST-LINK serial port, visualize it, and train a custom TensorFlow Sequential model.
-- **X-CUBE-AI Integration**: The trained TensorFlow model (`.h5`) is optimized and integrated into the STM32 project using the X-CUBE-AI expansion package.
+- **STM32Cube AI Integration**: The trained TensorFlow model (`.h5`) is optimized and integrated into the STM32 project using STM32Cube AI Studio.
 - **Runtime Mode Switching**: Seamlessly toggle between datalogging and AI inference modes without needing to flash different firmware.
 
 ## Data Format
@@ -92,7 +92,15 @@ Once you've collected the CSV dataset files, you can train the HAR model:
   python Tools/Scripts/har_train.py --data-dir Tools/Scripts
   ```
 - This will output a trained `model.h5` file along with accuracy metrics and a confusion matrix.
-- Import this `.h5` model into STM32CubeMX via X-CUBE-AI to generate the optimized C code for the microcontroller, and recompile the project.
+- Import this `.h5` model into **STM32Cube AI Studio** to generate the optimized C code for the microcontroller:
+  1. Create a new project in STM32Cube AI Studio.
+  2. Select the target board/MCU.
+  3. Select the target toolchain (in this case, **STM32CubeIDE**).
+  4. Select the generated `model.h5` file.
+  5. Before starting the run, ensure that all STM32Cube tools and toolchain paths are correct in the settings.
+  6. In advanced settings, select the expected input and output types as `float32`.
+  7. Start the run and choose to **generate C code** (not "Generate project").
+- The main project workspace contains the extracted C code generated from the STM32Cube AI Studio and its APIs are directly used instead of including the generated application code for easier integration. Recompile the project after updating the AI files.
 
 ### 4. AI Inference Mode
 Press the **User Button** on the board to toggle the `inference_enable` flag. 
@@ -101,4 +109,4 @@ Press the **User Button** on the board to toggle the `inference_enable` flag.
 
 **Inference Output:**
 
-![Inference Output Screenshot](image/inference.png)
+![Inference Output Screenshot](assets/inference.png)

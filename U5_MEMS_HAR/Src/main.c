@@ -29,7 +29,7 @@
 #include "app_ism330dhcx.h"
 
 /* AI BEGIN Includes */
-#include "ai_platform.h"
+#include "stai.h"
 #include "network.h"
 #include "network_data.h"
 /* AI END Includes */
@@ -57,15 +57,28 @@
 volatile uint32_t dataRdyIntReceived = 0;
 volatile uint32_t inference_enable = 0;
 
-ai_handle network;
-float aiInData[AI_NETWORK_IN_1_SIZE];
-float aiOutData[AI_NETWORK_OUT_1_SIZE];
-ai_u8 activations[AI_NETWORK_DATA_ACTIVATIONS_SIZE];
-const char* activities[AI_NETWORK_OUT_1_SIZE] = {
+STAI_NETWORK_CONTEXT_DECLARE(network_context, STAI_NETWORK_CONTEXT_SIZE)
+float aiInData[STAI_NETWORK_IN_1_SIZE];
+float aiOutData[STAI_NETWORK_OUT_1_SIZE];
+
+#if defined ( __ICCARM__ )
+#define AI_RAM   _Pragma("location=\"AI_RAM\"")
+#elif defined ( __CC_ARM ) || ( __GNUC__ )
+#define AI_RAM   __attribute__((section(".AI_RAM")))
+#else
+#define AI_RAM
+#endif
+
+STAI_ALIGNED(32) AI_RAM static uint8_t activations[STAI_NETWORK_ACTIVATION_1_SIZE_BYTES];
+stai_ptr data_activations[] = { activations };
+
+static stai_size in_length, out_length;
+static stai_ptr stai_input[STAI_NETWORK_IN_NUM];
+static stai_ptr stai_output[STAI_NETWORK_OUT_NUM];
+
+const char* activities[STAI_NETWORK_OUT_1_SIZE] = {
   "stationary", "left_right", "up_down"
 };
-ai_buffer * ai_input;
-ai_buffer * ai_output;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -86,34 +99,43 @@ int _write(int file, char *ptr, int len)
 }
 
 static void AI_Init(void) {
-	ai_error err;
+	stai_return_code ret_code;
 
-	/* Create a local array with the addresses of the activations buffers */
-	const ai_handle act_addr[] = { activations };
-	/* Create an instance of the model */
-	err = ai_network_create_and_init(&network, act_addr, NULL);
-	if (err.type != AI_ERROR_NONE) {
-		printf("ai_network_create error - type=%d code=%d\r\n", err.type,
-				err.code);
+	ret_code = stai_runtime_init();
+	if (ret_code != STAI_SUCCESS) {
+		printf("stai_runtime_init error\r\n");
 		Error_Handler();
 	}
-	ai_input = ai_network_inputs_get(network, NULL);
-	ai_output = ai_network_outputs_get(network, NULL);
+
+	ret_code = stai_network_init(network_context);
+	if (ret_code != STAI_SUCCESS) {
+		printf("stai_network_init error\r\n");
+		Error_Handler();
+	}
+
+	ret_code = stai_network_set_activations(network_context, data_activations, STAI_NETWORK_ACTIVATIONS_NUM);
+	if (ret_code != STAI_SUCCESS) {
+		printf("stai_network_set_activations error\r\n");
+		Error_Handler();
+	}
+
+	ret_code = stai_network_get_inputs(network_context, stai_input, &in_length);
+	ret_code = stai_network_get_outputs(network_context, stai_output, &out_length);
 }
 
 static void AI_Run(float *pIn, float *pOut) {
-	ai_i32 batch;
-	ai_error err;
+	stai_return_code ret_code;
 
-	/* Update IO handlers with the data payload */
-	ai_input[0].data = AI_HANDLE_PTR(pIn);
-	ai_output[0].data = AI_HANDLE_PTR(pOut);
+	stai_input[0] = (stai_ptr)pIn;
+	stai_output[0] = (stai_ptr)pOut;
 
-	batch = ai_network_run(network, ai_input, ai_output);
-	if (batch != 1) {
-		err = ai_network_get_error(network);
-		printf("AI ai_network_run error - type=%d code=%d\r\n", err.type,
-				err.code);
+	ret_code = stai_network_set_inputs(network_context, stai_input, STAI_NETWORK_IN_NUM);
+	ret_code = stai_network_set_outputs(network_context, stai_output, STAI_NETWORK_OUT_NUM);
+
+	ret_code = stai_network_run(network_context, STAI_MODE_SYNC);
+	if (ret_code != STAI_SUCCESS) {
+		ret_code = stai_network_get_error(network_context);
+		printf("AI stai_network_run error\r\n");
 		Error_Handler();
 	}
 }
@@ -202,17 +224,17 @@ int main(void)
 																/ 1000000.0f;
 		  write_index += 6;
 
-		  if (write_index == AI_NETWORK_IN_1_SIZE) {
+		  if (write_index == STAI_NETWORK_IN_1_SIZE) {
 			  write_index = 0;
 
 			  printf("Running inference\r\n");
 			  AI_Run(aiInData, aiOutData);
 
 			  /* Output results */
-			  for (uint32_t i = 0; i < AI_NETWORK_OUT_1_SIZE; i++) {
+			  for (uint32_t i = 0; i < STAI_NETWORK_OUT_1_SIZE; i++) {
 				  printf("%8.6f ", aiOutData[i]);
 			  }
-			  uint32_t class = argmax(aiOutData, AI_NETWORK_OUT_1_SIZE);
+			  uint32_t class = argmax(aiOutData, STAI_NETWORK_OUT_1_SIZE);
 			  printf(": %d - %s\r\n", (int) class, activities[class]);
 			  HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 		  }

@@ -38,9 +38,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/U5_MEMS_HAR.ioc</locationURI>
 		</link>
 		<link>
-			<name>Doc/network_generate_report.txt</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/network_generate_report.txt</locationURI>
+			<name>Application/ai_generated_network</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>Application/User/app_ism330dhcx.c</name>
@@ -68,21 +68,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/main.c</locationURI>
 		</link>
 		<link>
-			<name>Application/User/network.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/network.c</locationURI>
-		</link>
-		<link>
-			<name>Application/User/network_data.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/network_data.c</locationURI>
-		</link>
-		<link>
-			<name>Application/User/network_data_params.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/network_data_params.c</locationURI>
-		</link>
-		<link>
 			<name>Application/User/stm32u5xx_hal_msp.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/stm32u5xx_hal_msp.c</locationURI>
@@ -96,6 +81,16 @@
 			<name>Application/User/usart.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/usart.c</locationURI>
+		</link>
+		<link>
+			<name>Application/ai_generated_network/network.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/u5-mems-har-run-1-model-network-ApplicationTemplate-code/ai_generated_network/network.c</locationURI>
+		</link>
+		<link>
+			<name>Application/ai_generated_network/network_data.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/u5-mems-har-run-1-model-network-ApplicationTemplate-code/ai_generated_network/network_data.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/CMSIS/system_stm32u5xx.c</name>
